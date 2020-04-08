@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <head>
+            <meta charset="utf-8" />
+            <title>Chart.js Example</title>
+            <!-- import plugin script -->
+            <script src='./static/Chart.min.js'></script>
+          </head>
+</head>
+<body>
+        <h1>Bar Chart</h1>
+        <!-- bar chart canvas element -->
+        <canvas id="myChart" width="100" height="50"></canvas>
+        <p id="caption">The chart is displaying a bar  chart of ailments.</p>
+        
+      
+
+<script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [{% for item in labs %}
+                     "{{item.ailment}}",
+                    {% endfor %}],
+          datasets: [{
+              label: '{{ legend }}',
+              data:  [{% for item in labs %}
+                        {{item.id}},
+                      {% endfor %}],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 2
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      }
+  });
+  </script>
+
+  <br> <br> <br>
+
+  
+
+    
+</body>
+</html>
