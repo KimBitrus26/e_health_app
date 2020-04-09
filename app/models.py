@@ -25,18 +25,16 @@ class User(UserMixin, db.Model):
         self.password = password  
 
 
-    # a callback function that loads a user
-    # @login.user_loader
-    # def load_user(id):
-    #     return User.query.get(id)
-
+    #a callback function that loads a user
     @login.user_loader
     def load_user(id):
-        return User.query.get(int(id))
+        return User.query.get(id)
+
+    
 
 
 #practioner model
-class Practioner(UserMixin, db.Model):
+class Practitioner(UserMixin, db.Model):
     __tablename__ = 'practioners'
     id = db.Column(db.Integer, primary_key = True)
     first_name = db.Column(db.String(50))
@@ -53,6 +51,11 @@ class Practioner(UserMixin, db.Model):
         self.expertise = expertise
         self.password = password
 
+        # callback function that loads a user
+    @login.user_loader
+    def load_user(id):
+        return Practitioner.query.get(id)
+
 class Patients(db.Model):
     __tablename__ = 'patients'
     id = db.Column(db.Integer, primary_key = True)
@@ -68,6 +71,7 @@ class Patients(db.Model):
         self.gender = gender
         self.genotype = genotype
         self.ailment = ailment
+    
     
                   
 #programmatic creating database

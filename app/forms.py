@@ -12,7 +12,7 @@ class UserRegisterationForm(Form):
     password = PasswordField('Password', [validators.DataRequired(), validators.EqualTo('confirm', message='password do not match')])
     confirm = PasswordField('Confirm password')
 
-class PractionerRegisterationForm(Form):
+class PractitionerRegisterationForm(Form):
     first_name = StringField(u'First name', validators=[validators.input_required()])
     last_name = StringField(u'Last name', validators=[validators.input_required()])
     email = StringField(u'Email', validators=[validators.input_required(), validators.Email()])
@@ -25,7 +25,7 @@ class UserLoginForm(Form):
     email = StringField('Email', validators=[validators.input_required(), validators.Email()])
     password = PasswordField('Password', [validators.DataRequired()])
     remember_me = BooleanField('Keep me logged in')
-class PractionerLoginForm(Form):
+class PractitionerLoginForm(Form):
     email = StringField('Email', validators=[validators.input_required(), validators.Email()])
     password = PasswordField('Password', [validators.DataRequired()])
     remember_me = BooleanField('Keep me logged in')

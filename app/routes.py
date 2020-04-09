@@ -1,9 +1,9 @@
 from flask import request,render_template, redirect, flash, url_for
 from app import app
-from app.forms import UserLoginForm, MedForm, PractionerLoginForm, PractionerRegisterationForm, UserRegisterationForm
+from app.forms import UserLoginForm, MedForm, PractitionerLoginForm, PractitionerRegisterationForm, UserRegisterationForm
 from flask_login import LoginManager, UserMixin, login_required, logout_user, current_user, login_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import User, Practioner, Patients
+from app.models import User, Practitioner, Patients
 from datetime import datetime
 from app import db
 
@@ -34,13 +34,14 @@ def record():
     return render_template("record.html", records=records)
 #the login endpoint
 @app.route("/login_user", methods=["GET", "POST"])
-def login_user():
-    form = UserLoginForm()
+def user_login():
+    form = UserLoginForm(request.form)
     if request.method == "POST":
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember_me.data)
+                flash("Successfully logged in", "success")
                 # return to attemted protected routes after successfully logged in
                 return redirect(url_for('index'))
             flash("Invalid email or password", "info")
@@ -66,19 +67,19 @@ def sign_up_user():
         db.session.add(user)
         db.session.commit()
         flash("Successfully registered ", "success")
-        return redirect(url_for("login_user"))
+        return redirect(url_for("user_login"))
         
     return render_template("user_register.html", form=form)
 
 #the login endpoint for practioner
 @app.route("/login_practitioner", methods=["GET", "POST"])
 def login_practitioner():
-    form = PractionerLoginForm()
+    form = PractitionerLoginForm()
     if request.method == "POST":
-        user = Practioner.query.filter_by(email=form.email.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember_me.data)
+        result = Practitioner.query.filter_by(email=form.email.data).first()
+        if result:
+            if check_password_hash(result.password, form.password.data):
+                login_user(result, remember=form.remember_me.data)
                 # return to attemted protected routes after successfully logged in
                 next_page = request.args.get("next")
                 return redirect(next_page or url_for('index'))
@@ -92,17 +93,17 @@ def login_practitioner():
 #the register endpoint for practitioners
 @app.route("/sign_up_practitioner", methods=["GET", "POST"])
 def sign_up_practitioner():
-    form = PractionerRegisterationForm(request.form)
+    form = PractitionerRegisterationForm(request.form)
     if request.method == "POST":
         #create an object and pass the hashed password
         hashed_password = generate_password_hash(form.password.data, method="sha256")
-        data = Practioner.query.filter_by(email=form.email.data).first()
+        data = Practitioner.query.filter_by(email=form.email.data).first()
         if data:
             #check if email alredy in the database
             if data.email == form.email.data:
                 flash("User already exist", "danger")
                 return render_template("practitioner_register.html", form=form)
-        practitioner = Practioner(first_name=form.first_name.data,last_name=form.last_name.data,email=form.email.data,expertise=form.expertise.data,password=hashed_password)
+        practitioner = Practitioner(first_name=form.first_name.data,last_name=form.last_name.data,email=form.email.data,expertise=form.expertise.data,password=hashed_password)
         db.session.add(practitioner)
         db.session.commit()
         flash("Successfully registered ", "success")
@@ -123,11 +124,11 @@ def med():
 @app.route("/chart")
 def chart():
     legend = 'E-Health Data'
-    labels = ["Ebola", "Covid19", "Malaria"]
+    #labels = ["Ebola", "Covid19", "Malaria"]
     labs = Patients.query.all()
     
     values = [10, 4, 8]
-    return render_template('chart.html', labs=labs, values=values, labels=labels, legend=legend)
+    return render_template('chart.html', labs=labs, values=values, legend=legend)
  
  
 
