@@ -18,15 +18,20 @@ def signup():
 
 @app.route("/malaria")
 def malaria():
-    return render_template("update.html")
+    results = Patients.query.filter_by(ailment="Malaria").all()
+    return render_template("malaria.html", results=results)
 
 @app.route("/ebola")
 def ebola():
-    return render_template("update.html")
+    results = Patients.query.filter_by(ailment="Ebola").all()
+    return render_template("ebola.html", results=results)
+
 
 @app.route("/covid19")
 def covid19():
-    return render_template("update.html")
+    results = Patients.query.filter_by(ailment="Covid19").all()
+    return render_template("covid.html", results=results)
+
 
 @app.route("/record")
 def record():

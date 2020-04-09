@@ -1,0 +1,42 @@
+
+{% extends "layout.html" %}
+{% block body%}
+<div class="jumbotron text-center">
+
+
+<h3>Stay safe...</h3>
+
+
+
+<h2>Patients with Ebola</h2>}
+<hr>
+<table class="table table-striped">
+    <tr>
+        <th>S/N</th>
+        <th>Full name</th>
+        <th>date of birth</th>
+     <th>Gender</th>
+        <th>Genotype</th>
+        <th>Ailment</th>
+
+    </tr>
+
+    {% for record in results %}
+   <tr>
+
+       <td>{{record.id}}</td>
+       <td>{{record.full_name}}</td>
+       <td>{{record.date_of_birth}}</td>
+    
+       <td>{{record.gender}}</td>
+       <td>{{record.genotype}}</td>
+       <td>{{record.ailment}}</td>
+
+       
+   </tr>
+   {% endfor %}
+
+
+</table>
+
+{% endblock %}
